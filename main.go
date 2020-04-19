@@ -30,6 +30,7 @@ func main() {
 	p.Use(e)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	e.GET("/request", config.RequestInformations)
 
 	v1 := e.Group("/api/v1")
 	{
@@ -51,8 +52,7 @@ func main() {
 			users.DELETE("/:id", h.DeleteUser)
 			users.PATCH("/:id", h.UpdateUser)
 		}
-
 	}
 
-	e.Logger.Fatal(e.Start(config.Port))
+	config.Serve(e)
 }
