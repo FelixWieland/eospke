@@ -1,0 +1,289 @@
+basePath: /api/v1
+definitions:
+  handler.HTTPError:
+    properties:
+      code:
+        type: integer
+      msg:
+        type: string
+    type: object
+  types.Survey:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  types.Surveys:
+    items:
+      $ref: '#/definitions/types.Survey'
+    type: array
+  types.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+    type: object
+  types.Users:
+    items:
+      $ref: '#/definitions/types.User'
+    type: array
+info:
+  contact:
+    email: felix.wieland@mail.de
+    name: Felix Wieland
+  description: This is a sample how to use Echo to create restful APIs
+  license: {}
+  title: Echo Survey API
+  version: "1.0"
+paths:
+  /surveys:
+    get:
+      consumes:
+      - application/json
+      description: Returns all survey items
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Surveys'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Returns all Surveys
+      tags:
+      - Survey
+    post:
+      consumes:
+      - application/json
+      description: Creates a Survey item
+      parameters:
+      - description: New Survey
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/types.Survey'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.Survey'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Create a Survey
+      tags:
+      - Survey
+  /surveys/{id}:
+    delete:
+      description: Deletes a Survey item
+      parameters:
+      - description: Survey ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/types.Survey'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Delete a Survey
+      tags:
+      - Survey
+    get:
+      consumes:
+      - application/json
+      description: Returns a Survey item
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Survey'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Finds a Survey
+      tags:
+      - Survey
+    patch:
+      consumes:
+      - application/json
+      description: Updates a Survey item
+      parameters:
+      - description: Updated Survey
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/types.Survey'
+      - description: Survey ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Survey'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Update a Survey
+      tags:
+      - Survey
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Returns all User items
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Users'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Returns all Users
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Creates a User item
+      parameters:
+      - description: New User
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/types.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Creates a User
+      tags:
+      - User
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a User item
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Delete a User
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: Returns a User item
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Returns a User
+      tags:
+      - User
+    patch:
+      consumes:
+      - application/json
+      description: Updates a User item
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated User
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/types.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Updates a User
+      tags:
+      - User
+swagger: "2.0"
