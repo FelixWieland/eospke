@@ -17,3 +17,6 @@ eospke
 
 # Certificates
 *.pem
+
+# Swagger documentation
+docs
