@@ -8,7 +8,7 @@ require (
 	github.com/gliderlabs/logspout v3.2.6+incompatible // indirect
 	github.com/go-openapi/spec v0.19.7 // indirect
 	github.com/go-openapi/swag v0.19.9 // indirect
-	github.com/labstack/echo v3.3.10+incompatible // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo-contrib v0.9.0
 	github.com/labstack/echo/v4 v4.1.16
 	github.com/looplab/logspout-logstash v0.0.0-20171130125839-68a4e47e757d // indirect

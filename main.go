@@ -1,11 +1,13 @@
 package main
 
 import (
+	"github.com/FelixWieland/eospke/config"
 	_ "github.com/FelixWieland/eospke/docs"
 	"github.com/FelixWieland/eospke/handler"
 
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
@@ -19,13 +21,14 @@ import (
 // @BasePath /api/v1
 func main() {
 	e := echo.New()
+	e.Use(config.CorsMiddleware)
+	e.Use(middleware.Recover())
+
 	e.HTTPErrorHandler = handler.ErrorHandler
 
-	//prometheus initialization
 	p := prometheus.NewPrometheus("echo", nil)
 	p.Use(e)
 
-	//swagger initialization
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	v1 := e.Group("/api/v1")
@@ -51,5 +54,5 @@ func main() {
 
 	}
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(config.Port))
 }
