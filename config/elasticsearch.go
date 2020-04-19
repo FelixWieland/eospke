@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -9,12 +10,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const elasticsearchHost = "192.168.178.74:9200"
+const elasticsearchHost = "http://localhost:9200"
 const elasticsearchUsername = "elastic"
 const elasticsearchPassword = "changeme"
 
+// MakeElasticHook returns a logrus hook to elasticsearch
 func MakeElasticHook(logger *logrus.Logger) (*elastic_logrus.ElasticSearchHook, error) {
-
 	elastic.SetSniff(false)
 
 	url := elastic.SetURL(elasticsearchHost)
@@ -23,7 +24,7 @@ func MakeElasticHook(logger *logrus.Logger) (*elastic_logrus.ElasticSearchHook, 
 	client, err := elastic.NewClient(url, auth)
 
 	if err != nil {
-		logger.WithError(err).Fatal("Failed to construct elasticsearch client")
+		return &elastic_logrus.ElasticSearchHook{}, errors.New("Failed to construct elasticsearch client")
 	}
 	hook, err := elastic_logrus.NewElasticHook(client, elasticsearchHost, logrus.DebugLevel, func() string {
 		return fmt.Sprintf("%s-%s", "some-index", time.Now().Format("2006-01-02"))

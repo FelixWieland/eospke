@@ -4,6 +4,7 @@ import (
 	"github.com/FelixWieland/eospke/config"
 	_ "github.com/FelixWieland/eospke/docs"
 	"github.com/FelixWieland/eospke/handler"
+	"github.com/FelixWieland/eospke/middleware"
 	echologrus "github.com/plutov/echo-logrus"
 	"github.com/sirupsen/logrus"
 
@@ -11,6 +12,17 @@ import (
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
+
+func init() {
+	echologrus.Logger = logrus.New()
+	elasticHook, err := config.MakeElasticHook(echologrus.Logger)
+	if err != nil {
+		echologrus.Logger.Errorf("Could not connect to elasticsearch: %v", err)
+		return
+	}
+	echologrus.Logger.AddHook(elasticHook)
+	echologrus.Logger.Info("Initialized logrus")
+}
 
 // @title Echo Survey API
 // @version 1.0
@@ -21,20 +33,13 @@ import (
 
 // @BasePath /api/v1
 func main() {
-	echologrus.Logger = logrus.New()
-	elasticHook, err := config.MakeElasticHook(echologrus.Logger)
-	if err != nil {
-		panic(err)
-	}
-	echologrus.Logger.AddHook(elasticHook)
-
 	e := echo.New()
 	e.Logger = echologrus.GetEchoLogger()
 
-	e.Use(config.CorsMiddleware)
-	e.Use(config.SecureMiddleware)
-	e.Use(config.GzipMiddleware)
-	e.Use(config.RecoverMiddleware)
+	e.Use(middleware.CorsMiddleware)
+	e.Use(middleware.SecureMiddleware)
+	e.Use(middleware.GzipMiddleware)
+	e.Use(middleware.RecoverMiddleware)
 
 	e.HTTPErrorHandler = handler.ErrorHandler
 
