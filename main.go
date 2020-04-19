@@ -9,7 +9,6 @@ import (
 
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
@@ -31,8 +30,11 @@ func main() {
 
 	e := echo.New()
 	e.Logger = echologrus.GetEchoLogger()
+
 	e.Use(config.CorsMiddleware)
-	e.Use(middleware.Recover())
+	e.Use(config.SecureMiddleware)
+	e.Use(config.GzipMiddleware)
+	e.Use(config.RecoverMiddleware)
 
 	e.HTTPErrorHandler = handler.ErrorHandler
 
@@ -40,6 +42,7 @@ func main() {
 	p.Use(e)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	e.GET("/request", config.RequestInformations)
 
 	v1 := e.Group("/api/v1")
 	{
@@ -63,5 +66,5 @@ func main() {
 		}
 	}
 
-	e.Logger.Fatal(e.Start(config.Port))
+	config.Serve(e)
 }
