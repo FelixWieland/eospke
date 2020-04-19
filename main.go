@@ -4,6 +4,8 @@ import (
 	"github.com/FelixWieland/eospke/config"
 	_ "github.com/FelixWieland/eospke/docs"
 	"github.com/FelixWieland/eospke/handler"
+	echologrus "github.com/plutov/echo-logrus"
+	"github.com/sirupsen/logrus"
 
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
@@ -20,7 +22,15 @@ import (
 
 // @BasePath /api/v1
 func main() {
+	echologrus.Logger = logrus.New()
+	elasticHook, err := config.MakeElasticHook(echologrus.Logger)
+	if err != nil {
+		panic(err)
+	}
+	echologrus.Logger.AddHook(elasticHook)
+
 	e := echo.New()
+	e.Logger = echologrus.GetEchoLogger()
 	e.Use(config.CorsMiddleware)
 	e.Use(middleware.Recover())
 
@@ -51,7 +61,6 @@ func main() {
 			users.DELETE("/:id", h.DeleteUser)
 			users.PATCH("/:id", h.UpdateUser)
 		}
-
 	}
 
 	e.Logger.Fatal(e.Start(config.Port))
