@@ -22,6 +22,7 @@ import (
 func main() {
 	e := echo.New()
 	e.Use(config.CorsMiddleware)
+	e.Use(config.GzipMiddleware)
 	e.Use(middleware.Recover())
 
 	e.HTTPErrorHandler = handler.ErrorHandler
