@@ -4,6 +4,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+//SurveyHandler is a handler for Survey requests
+type SurveyHandler Handler
+
+//NewSurveyHandler creates a handler for Survey requests
+func NewSurveyHandler() *SurveyHandler {
+	return &SurveyHandler{}
+}
+
 // GetSurveys godoc
 // @Summary Returns all Surveys
 // @Description Returns all survey items

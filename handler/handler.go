@@ -16,14 +16,3 @@ func newHTTPError(code int, msg string) *HTTPError {
 type Handler struct {
 	m sync.Mutex
 }
-
-type SurveyHandler Handler
-type UserHandler Handler
-
-func NewSurveyHandler() *SurveyHandler {
-	return &SurveyHandler{}
-}
-
-func NewUserHandler() *UserHandler {
-	return &UserHandler{}
-}

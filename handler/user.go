@@ -2,6 +2,14 @@ package handler
 
 import echo "github.com/labstack/echo/v4"
 
+//UserHandler is a handler for User requests
+type UserHandler Handler
+
+//NewUserHandler creates a handler for User requests
+func NewUserHandler() *UserHandler {
+	return &UserHandler{}
+}
+
 // GetUsers godoc
 // @Summary Returns all Users
 // @Description Returns all User items
