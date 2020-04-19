@@ -7,7 +7,6 @@ import (
 
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
@@ -21,9 +20,11 @@ import (
 // @BasePath /api/v1
 func main() {
 	e := echo.New()
+
 	e.Use(config.CorsMiddleware)
+	e.Use(config.SecureMiddleware)
 	e.Use(config.GzipMiddleware)
-	e.Use(middleware.Recover())
+	e.Use(config.RecoverMiddleware)
 
 	e.HTTPErrorHandler = handler.ErrorHandler
 
