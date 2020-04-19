@@ -12,6 +12,16 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+func init() {
+	echologrus.Logger = logrus.New()
+	elasticHook, err := config.MakeElasticHook(echologrus.Logger)
+	if err != nil {
+		panic(err)
+	}
+	echologrus.Logger.AddHook(elasticHook)
+	echologrus.Logger.Info("Initialized logrus")
+}
+
 // @title Echo Survey API
 // @version 1.0
 // @description This is a sample how to use Echo to create restful APIs

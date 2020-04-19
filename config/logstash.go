@@ -9,7 +9,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const elasticsearchHost = "192.168.178.74:9200"
+const elasticsearchHost = "http://localhost:9200"
 const elasticsearchUsername = "elastic"
 const elasticsearchPassword = "changeme"
 
