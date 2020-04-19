@@ -19,4 +19,4 @@ eospke
 *.pem
 
 # Swagger documentation
-docs
+docs/
