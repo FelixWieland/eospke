@@ -32,14 +32,17 @@ func init() {
 // @contact.email felix.wieland@mail.de
 
 // @BasePath /api/v1
+
+// @securitydefinitions.oauth2.accessCode OAuth2AccessCode
+// @tokenUrl https://example.com/oauth/token
+// @authorizationurl https://github.com/login/oauth/authorize?allow_signup=true&redirect_uri=https://localhost:1234/swagger/index.html
+
 func main() {
 	e := echo.New()
 	e.Logger = echologrus.GetEchoLogger()
 
-	e.Use(middleware.CorsMiddleware)
-	e.Use(middleware.SecureMiddleware)
-	e.Use(middleware.GzipMiddleware)
-	e.Use(middleware.RecoverMiddleware)
+	e.Use(middleware.Cors)
+	e.Use(middleware.Recover)
 
 	e.HTTPErrorHandler = handler.ErrorHandler
 
@@ -50,6 +53,8 @@ func main() {
 	e.GET("/request", config.RequestInformations)
 
 	v1 := e.Group("/api/v1")
+	v1.Use(middleware.Secure)
+	v1.Use(middleware.Gzip)
 	{
 		surveys := v1.Group("/surveys")
 		{
@@ -65,10 +70,20 @@ func main() {
 			h := handler.NewUserHandler()
 			users.GET("/", h.GetUsers)
 			users.GET("/:id", h.FindUser)
-			users.POST("/", h.RegisterUser)
 			users.DELETE("/:id", h.DeleteUser)
 			users.PATCH("/:id", h.UpdateUser)
 		}
+		authorization := v1.Group("/authorization")
+		{
+			h := handler.NewAuthenticationHandler()
+			authorization.POST("/register", h.Register)
+			authorization.POST("/login", h.Login)
+		}
+
+		v1.GET("/authenticated", func(c echo.Context) error {
+			return c.String(200, "OK")
+		}, middleware.Authenticated)
+
 	}
 
 	config.Serve(e)

@@ -28,6 +28,8 @@ run:
 	./$(BINARY_NAME)
 devcert:	
 	$(GOCMD) run $(CERTPATH) --host localhost
+swagger:
+	$(BUILD_SWAGGER)
 deps:
 	$(GOCMD) mod download
 	$(GOCMD) get -u github.com/swaggo/swag/cmd/swag

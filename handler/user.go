@@ -1,6 +1,8 @@
 package handler
 
-import echo "github.com/labstack/echo/v4"
+import (
+	echo "github.com/labstack/echo/v4"
+)
 
 //UserHandler is a handler for User requests
 type UserHandler Handler
@@ -34,20 +36,6 @@ func (h *UserHandler) GetUsers(c echo.Context) error {
 // @Failure 404 {object} HTTPError
 // @Router /users/{id} [get]
 func (h *UserHandler) FindUser(c echo.Context) error {
-	return nil
-}
-
-// RegisterUser godoc
-// @Summary Creates a User
-// @Description Creates a User item
-// @Tags User
-// @Accept json
-// @Produce json
-// @Param todo body types.User true "New User"
-// @Success 200 {object} types.User
-// @Failure 404 {object} HTTPError
-// @Router /users [post]
-func (h *UserHandler) RegisterUser(c echo.Context) error {
 	return nil
 }
 
